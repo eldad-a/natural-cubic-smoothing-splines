@@ -79,12 +79,18 @@
         * Performance: consider forking the w==None/1 case to remove D (and
          powers)
 """
+from __future__ import print_function # Python 2 and 3
+## dependency: conda install future
+from past.builtins import xrange # Python 2 and 3: backward-compatible 
+from future.utils import iteritems # Python 2 and 3
 
 import numpy as np
 from scipy import sparse, optimize
 from scipy.sparse import linalg as spla
 from scipy import linalg as la #import solve_banded, svd, inv, sqrtm
 from scipy.linalg import LinAlgError
+
+import sys
 
 
 class NaturalCubicSpline:
@@ -223,7 +229,7 @@ class NaturalCubicSpline:
         if x is not None: 
             self.__take_inputs__(x, y, w, p, LOG)
         else:
-            print 'No data were provided'
+            print( 'No data were provided')
             return
 
         if return_spline:
@@ -268,23 +274,26 @@ class NaturalCubicSpline:
                     [0,1,2],
                     shape=(N-2,N) 
                     ).T
-        if p<0:
-            # In case p is not provided, attempt equal weight for the LSQ and
-            # the penalty (Nir Krakauer's choice for octave-splines):
-            #              Tr { 6(1-p) Q.T D^2 Q } = Tr { pR }
-            lamda = R.diagonal().sum() / (Q.T * D2 * Q).diagonal().sum() / 6. 
-            self.p = 1. / (1+lamda)
-            self.crit = 'equal_traces'
-        elif p in ['GCV', 'AIC', 'AICC', 'VM']:
-            self.crit = p
-            self.LOG = LOG # True => log of penatly terms instead of ratio
-            self.p = self.parameter_selection()
-            # TODO: calculate p accordingly
-        elif 0<=p<=1:
-            self.p = p
-        else:
-            print 'p=%s is not supported' % p
-            return # exit
+        
+        try:
+            if p in ['GCV', 'AIC', 'AICC', 'VM']:
+                self.crit = p
+                self.LOG = LOG # True => log of penatly terms instead of ratio
+                self.p = self.parameter_selection()
+            elif 0<=p<=1:
+                self.p = p
+            elif p<0:
+                # In case p is not provided, attempt equal weight for the LSQ and
+                # the penalty (Nir Krakauer's choice for octave-splines):
+                #              Tr { 6(1-p) Q.T D^2 Q } = Tr { pR }
+                R,Q,D2 = self.R, self.Q, self.D2
+                lamda = R.diagonal().sum() / (Q.T * D2 * Q).diagonal().sum() / 6. 
+                self.p = 1. / (1+lamda)
+                self.crit = 'equal_traces'
+        except:
+            print( "Unexpected error:", sys.exc_info()[0])
+            print( 'p=%s is not supported' % p)
+            raise
 
     def compute_smoothing_spline(self, boundary_condition='natural'):
         """
