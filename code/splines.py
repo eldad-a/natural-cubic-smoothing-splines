@@ -371,13 +371,21 @@ class NaturalCubicSpline:
             direction=1, axis=0) for coefs in A.coefs.T]
         pass
 
+    def Lambda(self,p):
+        _Lambda = lambda p: self.S**2/(self.S**2 + p/(1-p)/6)
+        try:
+            return _Lambda(p)
+        except AttributeError:
+            self.U,self.S = self.svd_eye_minus_hat_matrix()
+            return _Lambda(p)
+
     def estimate_uncertainty(self, p):
+        Lambda = self.Lambda
         data_infidelity, trI_H = self.get_penalty_terms(p)
         ## estimated noise variance [`wahba83`]
         sigma2 = np.mean(data_infidelity) / trI_H
         ## standard error estimates of fitted values [`hutchinson86`]
         w = self.w if self.w!=None else 1
-        Lambda = lambda p: self.S**2/(self.S**2 + p/(1-p)/6)
         diagH = 1 - np.dot(self.U**2, Lambda(p))
         unc_y = np.sqrt(sigma2 * diagH  / w)
         return sigma2, unc_y
@@ -386,7 +394,6 @@ class NaturalCubicSpline:
         """
         TODO: doc
         """
-        self.U,self.S = self.svd_eye_minus_hat_matrix()
         crit = self.crit.lower()
         #penalty_function = lambda p: penalty_compute(p, self.U, self.S**2,
         #                                             self.y, self.w,
@@ -439,8 +446,7 @@ class NaturalCubicSpline:
         """
         TODO: doc
         """
-        Lambda = lambda p: self.S**2/(self.S**2 + p/(1-p)/6)
-
+        Lambda = self.Lambda
         # TODO: verify that this is the correct way to introduce the weights!
         if self.w==None:
             L = Lambda(p)**2  
