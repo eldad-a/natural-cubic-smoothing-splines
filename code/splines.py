@@ -89,6 +89,7 @@ from scipy import sparse, optimize
 from scipy.sparse import linalg as spla
 from scipy import linalg as la #import solve_banded, svd, inv, sqrtm
 from scipy.linalg import LinAlgError
+from scipy.interpolate import PPoly
 
 import sys
 
@@ -366,10 +367,25 @@ class NaturalCubicSpline:
                            coefs[-2,-4]*dx[-1]**2
         return coefs
 
-    def piecewise_polynomial(self):
-        ppoly = [SP.PiecewisePolynomial(A.x, coefs.T[:,::-1], orders=3,
-            direction=1, axis=0) for coefs in A.coefs.T]
-        pass
+#    def piecewise_polynomial(self):
+#        piecewise_pol = [SP.PiecewisePolynomial(A.x, coefs.T[:,::-1], orders=3,
+#            direction=1, axis=0) for coefs in A.coefs.T]
+#        pass
+
+    def get_ppoly_from_coefs(self, return_ppoly=False):
+        self.ppoly = []
+
+        for coefs in self.coefs.T: 
+            _ppoly = coefs[:,:-1].copy()
+            _ppoly[0] /= 6
+            _ppoly[1] /= 2
+            self.ppoly.append(PPoly(_ppoly, self.x, extrapolate=False))
+        
+        if len(self.ppoly)==1:
+            self.ppoly = self.ppoly[0]
+
+        if return_ppoly:
+            return self.ppoly
 
     def Lambda(self,p):
         _Lambda = lambda p: self.S**2/(self.S**2 + p/(1-p)/6)
