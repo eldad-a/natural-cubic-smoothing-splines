@@ -22,6 +22,8 @@ N.Y. Krakauer (see Refs. below), with algorithmic modifications, mainly to gain 
 
 ## Theoretical background
 
+**TODO: render math properly**
+
 ### When the smoothing parameter is provided:
     
 `Carl de Boor (1978), A Practical Guide to Splines, Springer, Chapter XIV`
