@@ -237,8 +237,6 @@ class NaturalCubicSpline:
             f0, f2 = self.compute_smoothing_spline()
             #boundary_condition=boundary_condition)
             self.coefs = self.compute_coefficients(f0,f2) # TODO: knots_coefs?
-            #self.ppoly = self
-            #return self.ppoly, self.p, self.sigma2, self.unc_y
 
     def __take_inputs__(self, x, y, w, p, LOG):
         #TODO: 
@@ -395,7 +393,9 @@ class NaturalCubicSpline:
             self.U,self.S = self.svd_eye_minus_hat_matrix()
             return _Lambda(p)
 
-    def estimate_uncertainty(self, p):
+    def estimate_uncertainty(self, p=None):
+        if p is None:
+            p = self.p
         Lambda = self.Lambda
         data_infidelity, trI_H = self.get_penalty_terms(p)
         ## estimated noise variance [`wahba83`]
