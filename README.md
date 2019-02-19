@@ -17,7 +17,7 @@ N.Y. Krakauer (see Refs. below), with algorithmic modifications, mainly to gain 
 + E. Afik. [Robust and highly performant ring detection algorithm for 3d particle tracking using 2d microscope imaging](http://www.nature.com/articles/srep13584). Sci. Rep. 5, 13584; doi: 10.1038/srep13584 (2015)
 + E. Afik and V. Steinberg. [On the role of initial velocities in pair dispersion in a microfluidic chaotic flow](https://www.nature.com/articles/s41467-017-00389-8). _Nature Communications_ __8__, Article number: 468 (2017) [doi: 10.1038/s41467-017-00389-8](http://dx.doi.org/10.1038/s41467-017-00389-8).
 + E. Afik and V. Steinberg. A Lagrangian approach to elastic turbulence in a curvilinear microfluidic channel. figshare [doi: 10.6084/m9.figshare.5112991](http://dx.doi.org/10.6084/m9.figshare.5112991) (2017).
-+ T. Li, A. Yan, N. Bhatia, A. Altinok, E. Afik, P. Durand-Smet, ... & E. M. Meyerowitz. [Calcium signals are necessary to establish auxin transporter polarity in a plant stem cell niche](https://www.nature.com/articles/s41467-019-08575-6). Nature communications, 10(1), 726 (2019) [doi: 10.1038/s41467-019-08575-6](https://doi.org/10.1038/s41467-019-08575-6).
++ T. Li, A. Yan, N. Bhatia, A. Altinok, E. Afik, P. Durand-Smet, ... & E. M. Meyerowitz. [Calcium signals are necessary to establish auxin transporter polarity in a plant stem cell niche](https://www.nature.com/articles/s41467-019-08575-6). _Nature communications_ __10__, Article number: 726 (2019) [doi: 10.1038/s41467-019-08575-6](https://doi.org/10.1038/s41467-019-08575-6).
 
 * * *
 
